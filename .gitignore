@@ -1,0 +1,19 @@
+# IDE
+.idea/
+
+# Env
+.env
+frontend/.env
+
+# Terraform
+infra/*.pem
+infra/.terraform/
+infra/.terraform.lock.hcl
+infra/terraform.tfvars
+infra/terraform.tfstate
+infra/terraform.tfstate.*
+infra/*.tfplan
+infra/*_override.tf
+infra/*_override.tf.json
+infra/override.tf
+infra/override.tf.json
