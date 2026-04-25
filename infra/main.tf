@@ -71,33 +71,10 @@ resource "aws_instance" "app" {
   key_name               = aws_key_pair.app.key_name
   vpc_security_group_ids = [aws_security_group.ec2.id]
 
-  user_data = <<-EOF
-    #!/bin/bash
-    set -e
-
-    # Install Docker
-    dnf update -y
-    dnf install -y docker git
-    systemctl enable docker
-    systemctl start docker
-
-    # Install Docker Compose
-    curl -SL https://github.com/docker/compose/releases/latest/download/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose
-    chmod +x /usr/local/bin/docker-compose
-
-    # Clone repo
-    git clone https://github.com/FranGiordano/promptior-chatbot.git /app
-    cd /app
-
-    # Set env vars
-    cat > /app/.env <<ENV
-CLOUDFLARE_TUNNEL_TOKEN=${var.cloudflare_tunnel_token}
-OPENROUTER_API_KEY=${var.openrouter_api_key}
-ENV
-
-    # Run
-    docker-compose up -d
-  EOF
+  user_data = templatefile("${path.module}/user_data.sh", {
+    cloudflare_tunnel_token = var.cloudflare_tunnel_token
+    openrouter_api_key      = var.openrouter_api_key
+  })
 
   tags = {
     Name = "promptior-chatbot"
