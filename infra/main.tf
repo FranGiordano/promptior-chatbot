@@ -97,7 +97,7 @@ resource "aws_instance" "app" {
 
     # Run
     cd /app
-    docker compose up -d
+    docker-compose up -d
   EOF
 
   tags = {
