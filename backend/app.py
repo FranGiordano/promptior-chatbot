@@ -13,5 +13,6 @@ app = FastAPI(
 add_routes(
     app=app,
     runnable=agent,
-    path="/chat"
+    path="/chat",
+    config_keys=["configurable"],
 )
