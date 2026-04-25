@@ -1,43 +1,24 @@
-from langchain.agents import create_agent
-from langchain_openrouter import ChatOpenRouter
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+from langchain_openai import ChatOpenAI
 from config import config
-from langgraph.checkpoint.memory import InMemorySaver
-from langchain_core.messages import SystemMessage
 
 
-# Model
-
-model = ChatOpenRouter(
+model = ChatOpenAI(
     model=config.MODEL,
     api_key=config.OPENROUTER_API_KEY,
     base_url=config.OPENROUTER_BASE_URL,
     temperature=0.5,
-    streaming=True,
     max_tokens=25000,
-    timeout=300
+    timeout=300,
 )
 
-# Memory
+prompt = ChatPromptTemplate.from_messages([
+    ("system", """You are a promtior assistant.
 
-checkpointer = InMemorySaver()
+Your task is to answer questions related to Promtior AI based on the information provided in the RAG.
+If you don't know the answer, just say that you don't know, and invite the user to ask a follow-up question related to Promtior AI.
+"""),
+    MessagesPlaceholder(variable_name="messages"),
+])
 
-# System prompt
-
-SYSTEM_PROMPT = SystemMessage(content="""You are a promtior assistant.
-
-Your task is to answer questions based on the provided context and the information provided in the RAG.
-If you don't know the answer, just say that you don't know, don't try to make up an answer.
-""")
-
-# Tools
-
-tools = []
-
-# Agent
-
-agent = create_agent(
-    model=model,
-    checkpointer=checkpointer,
-    system_prompt=SYSTEM_PROMPT,
-    tools=tools
-)
+chain = prompt | model

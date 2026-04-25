@@ -50,7 +50,7 @@ cloudflare_tunnel_token = ""
 * CI/CD: Right now, terraform is used to deploy the infrastructure and the application. A better approach would be to use, 
 for example, github actions to deploy the application when a new commit is pushed to the main branch.
 * Testing: This project doesn't include any tests. It runs by pure will power.
-* A more robust memory and RAG setup. Both are very basic and use the EC2 instance RAM.
+* A more robust memory and RAG setup. Both are very basic and the RAG is stored in RAM.
 * Logging & Monitoring
 * Security
 * Scaling

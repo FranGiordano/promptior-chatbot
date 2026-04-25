@@ -1,9 +1,8 @@
-from agent import agent
+from agent import chain
 from fastapi import FastAPI
 from langserve import add_routes
 
 
-# Simple FastAPI setup using LangServe and a "/chat" route
 app = FastAPI(
     title="Promtior",
     description="Promtior chatbot",
@@ -12,7 +11,6 @@ app = FastAPI(
 
 add_routes(
     app=app,
-    runnable=agent,
+    runnable=chain,
     path="/chat",
-    config_keys=["configurable"],
 )
