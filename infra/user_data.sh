@@ -7,11 +7,10 @@ dnf install -y docker git
 systemctl enable docker
 systemctl start docker
 
-# Install Docker CLI plugins (buildx + compose)
+# Install Docker Compose plugin
 mkdir -p /usr/local/lib/docker/cli-plugins
-curl -SL https://github.com/docker/buildx/releases/latest/download/buildx-linux-amd64 -o /usr/local/lib/docker/cli-plugins/docker-buildx
 curl -SL https://github.com/docker/compose/releases/latest/download/docker-compose-linux-x86_64 -o /usr/local/lib/docker/cli-plugins/docker-compose
-chmod +x /usr/local/lib/docker/cli-plugins/docker-buildx /usr/local/lib/docker/cli-plugins/docker-compose
+chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
 
 # Clone repo
 git clone https://github.com/FranGiordano/promptior-chatbot.git /app
