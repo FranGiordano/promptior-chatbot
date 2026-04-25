@@ -57,13 +57,6 @@ resource "aws_security_group" "ec2" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
   egress {
     from_port   = 0
     to_port     = 0
@@ -98,11 +91,12 @@ resource "aws_instance" "app" {
 
     # Set env vars
     cat > .env <<ENV
+    CLOUDFLARE_TUNNEL_TOKEN=${var.cloudflare_tunnel_token}
     OPENROUTER_API_KEY=${var.openrouter_api_key}
     ENV
 
     # Run
-    docker-compose up -d
+    su - ec2-user -c 'cd /app && docker compose up -d'
   EOF
 
   tags = {

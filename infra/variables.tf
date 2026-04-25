@@ -29,3 +29,9 @@ variable "openrouter_api_key" {
   type        = string
   sensitive   = true
 }
+
+variable "cloudflare_tunnel_token" {
+  description = "Cloudflare Tunnel token"
+  type        = string
+  sensitive = true
+}
