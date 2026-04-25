@@ -5,7 +5,7 @@ services:
     container_name: backend
     restart: unless-stopped
     environment:
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - OPENROUTER_API_KEY=${OPENROUTER_API_KEY}
       - MODEL=${MODEL:-openai/gpt-4o-mini}
       - PROMTIOR_URL=${PROMTIOR_URL:-https://www.promtior.ai}
     ports:
