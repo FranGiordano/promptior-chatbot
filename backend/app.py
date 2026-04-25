@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from langserve import add_routes
 
 
-# Simple FastAPI setup using LangServe and a "/chat" endpoint
+# Simple FastAPI setup using LangServe and a "/chat" route
 app = FastAPI(
     title="Promtior",
     description="Promtior chatbot",
