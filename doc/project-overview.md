@@ -45,12 +45,18 @@ cloudflare_tunnel_token = ""
 4. Run `make apply` to deploy the infrastructure
 5. You can remove the infrastructure by running `make destroy`.
 
+If you don't want to create a cloudflare tunnel, you can remove the service from the compose file, and open the frontend
+port in the security group. After that, you can access the application via the EC2 instance's public IP address (output 
+of `make apply`).
+
 ## What is not included on this project
 
 * CI/CD: Right now, terraform is used to deploy the infrastructure and the application. A better approach would be to use, 
 for example, github actions to deploy the application when a new commit is pushed to the main branch.
 * Testing: This project doesn't include any tests. It runs by pure will power.
-* A more robust memory and RAG setup. Both are very basic and the RAG is stored in RAM.
+* A more robust memory and RAG setup. Both are very basic and the RAG is stored in RAM. As I said before, I think that
+a better approach would be to use a framework like Pydantic AI with FastAPI, adding postgres + pgvector for the RAG and memory, 
+and redis for the cache.
 * Logging & Monitoring
 * Security
 * Scaling

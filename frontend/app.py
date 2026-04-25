@@ -28,7 +28,7 @@ async def on_message(message: cl.Message):
     await response_msg.send()
 
     try:
-        async with httpx.AsyncClient(timeout=60.0) as client:
+        async with httpx.AsyncClient(timeout=120.0) as client:
             async with client.stream(
                 "POST",
                 f"{BACKEND_URL}/chat/stream",
@@ -39,7 +39,9 @@ async def on_message(message: cl.Message):
                 headers={"Accept": "text/event-stream"},
             ) as response:
                 response.raise_for_status()
+
                 current_event = None
+
                 async for line in response.aiter_lines():
                     if line.startswith("event: "):
                         current_event = line[7:].strip()
@@ -51,12 +53,36 @@ async def on_message(message: cl.Message):
                         continue
                     try:
                         chunk = json.loads(data_str)
-                        # LCEL streams AIMessageChunk — content is at the top level
-                        content = chunk.get("content", "")
-                        if content:
-                            await response_msg.stream_token(content)
+
+                        # Each event is {node_name: {"messages": [...]}}
+                        for node_name, node_data in chunk.items():
+                            if not isinstance(node_data, dict):
+                                continue
+                            for msg in node_data.get("messages", []):
+                                if not isinstance(msg, dict):
+                                    continue
+                                msg_type = msg.get("type", "")
+                                content = msg.get("content", "")
+                                tool_calls = msg.get("tool_calls", [])
+
+                                if msg_type == "ai" and tool_calls:
+                                    for tc in tool_calls:
+                                        name = tc.get("name", "tool")
+                                        args = tc.get("args", {})
+                                        async with cl.Step(name=name, type="tool") as step:
+                                            step.input = json.dumps(args, ensure_ascii=False, indent=2)
+
+                                elif msg_type == "tool":
+                                    name = msg.get("name", "result")
+                                    async with cl.Step(name=f"{name} · result", type="tool") as step:
+                                        step.output = content or "(empty)"
+
+                                elif msg_type == "ai" and content:
+                                    await response_msg.stream_token(content)
+
                     except json.JSONDecodeError:
                         pass
+
     except httpx.ConnectError:
         response_msg.content = (
             "Sorry, I can't reach the backend right now. Please try again later."

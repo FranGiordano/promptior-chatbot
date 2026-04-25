@@ -1,4 +1,4 @@
-from agent import chain
+from agent import agent
 from fastapi import FastAPI
 from langserve import add_routes
 
@@ -11,6 +11,6 @@ app = FastAPI(
 
 add_routes(
     app=app,
-    runnable=chain,
+    runnable=agent,
     path="/chat",
 )
