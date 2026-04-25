@@ -16,16 +16,15 @@ expose my knowledge of the assignment to the best of my ability, while also tryi
 * The docker compose will run three containers:
     * The backend container that will run the langchain application with its own pre-built RAG.
     * The frontend container that will run the chainlit application, added as an extra for a nice UI.
-    * The cloudflare-tunnel container, added as an extra that will provide a secure connection between the users and the application, with a proper domain name. Also it avoids the need to expose the application to the internet with a public IP.
+    * The cloudflare-tunnel container, added as an extra that will provide a secure connection between the users and the application, with a proper domain name. Also, it avoids the need to expose the EC2 instance to the internet.
 * I know that these last two containers were not asked in the assignment, but I ended up adding them because I thought it would make the app more complete.
 
 ## Challenges found
 
-I didn't find any major challenges in this project. Maybe the most difficult part was to learn how to use langchain and chainlit.
+I didn't find any major challenges in this project. Maybe the most difficult part was to learn how to deploy langchain, 
+as the company is intentionally hiding the LangServe deployment instructions in favor of using their own managed service.
 Most chatbots I've made have been built using tools like n8n or Pydantic AI with FastAPI (which I consider it to be a more robust
-and production-ready framework).
-
-However, this project was a good opportunity to learn how to use them :)
+and production-ready framework). However, this project was a good opportunity to learn how to use langchain :)
 
 ## How to deploy
 
@@ -51,6 +50,7 @@ cloudflare_tunnel_token = ""
 * CI/CD: Right now, terraform is used to deploy the infrastructure and the application. A better approach would be to use, 
 for example, github actions to deploy the application when a new commit is pushed to the main branch.
 * Testing: This project doesn't include any tests. It runs by pure will power.
+* A more robust memory and RAG setup. Both are very basic and use the EC2 instance RAM.
 * Logging & Monitoring
 * Security
 * Scaling
