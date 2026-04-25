@@ -32,7 +32,7 @@ async def on_message(message: cl.Message):
                 "POST",
                 f"{BACKEND_URL}/chat/stream",
                 json={
-                    "input": {"messages": [{"role": "user", "content": message.content}]},
+                    "input": {"messages": [{"type": "human", "content": message.content}]},
                     "config": {"configurable": {"thread_id": thread_id}},
                 },
                 headers={"Accept": "text/event-stream"},
