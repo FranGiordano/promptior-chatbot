@@ -1,6 +1,11 @@
 # IDE
 .idea/
 
+# Virtual environments
+.venv/
+backend/.venv/
+frontend/.venv/
+
 # Env
 .env
 frontend/.env
@@ -17,3 +22,19 @@ infra/*_override.tf
 infra/*_override.tf.json
 infra/override.tf
 infra/override.tf.json
+/.chainlit/translations/bn.json
+/.chainlit/config.toml
+/.chainlit/translations/en-US.json
+/.chainlit/translations/gu.json
+/.chainlit/translations/he-IL.json
+/.chainlit/translations/hi.json
+/.chainlit/translations/ja.json
+/.chainlit/translations/kn.json
+/.chainlit/translations/ml.json
+/.chainlit/translations/mr.json
+/.chainlit/translations/nl.json
+/.chainlit/translations/ta.json
+/.chainlit/translations/te.json
+/.chainlit/translations/zh-CN.json
+/frontend/promtior_frontend.egg-info/
+/backend/promtior_backend.egg-info/
