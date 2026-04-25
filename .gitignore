@@ -38,3 +38,4 @@ infra/override.tf.json
 /.chainlit/translations/zh-CN.json
 /frontend/promtior_frontend.egg-info/
 /backend/promtior_backend.egg-info/
+/infra/.terraform.tfstate.lock.info
