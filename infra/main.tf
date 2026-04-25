@@ -96,7 +96,8 @@ resource "aws_instance" "app" {
     ENV
 
     # Run
-    su - ec2-user -c 'cd /app && docker compose up -d'
+    cd /app
+    docker compose up -d
   EOF
 
   tags = {
