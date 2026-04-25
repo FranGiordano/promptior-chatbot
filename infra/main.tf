@@ -75,15 +75,14 @@ resource "aws_instance" "app" {
     #!/bin/bash
     set -e
 
-    # Install Docker
+    # Install Docker + Compose plugin
     dnf update -y
-    dnf install -y docker git
+    dnf install -y docker docker-compose-plugin git
     systemctl enable docker
     systemctl start docker
 
-    # Install Docker Compose
-    curl -SL https://github.com/docker/compose/releases/latest/download/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose
-    chmod +x /usr/local/bin/docker-compose
+    # Wait for Docker daemon to be ready
+    until docker info >/dev/null 2>&1; do sleep 2; done
 
     # Clone repo
     git clone https://github.com/FranGiordano/promptior-chatbot.git /app
@@ -96,8 +95,7 @@ resource "aws_instance" "app" {
     ENV
 
     # Run
-    cd /app
-    docker-compose up -d
+    docker compose up -d
   EOF
 
   tags = {
