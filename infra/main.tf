@@ -75,27 +75,28 @@ resource "aws_instance" "app" {
     #!/bin/bash
     set -e
 
-    # Install Docker + Compose plugin
+    # Install Docker
     dnf update -y
-    dnf install -y docker docker-compose-plugin git
+    dnf install -y docker git
     systemctl enable docker
     systemctl start docker
 
-    # Wait for Docker daemon to be ready
-    until docker info >/dev/null 2>&1; do sleep 2; done
+    # Install Docker Compose
+    curl -SL https://github.com/docker/compose/releases/latest/download/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose
+    chmod +x /usr/local/bin/docker-compose
 
     # Clone repo
     git clone https://github.com/FranGiordano/promptior-chatbot.git /app
     cd /app
 
     # Set env vars
-    cat > .env <<ENV
-    CLOUDFLARE_TUNNEL_TOKEN=${var.cloudflare_tunnel_token}
-    OPENROUTER_API_KEY=${var.openrouter_api_key}
-    ENV
+    cat > /app/.env <<ENV
+CLOUDFLARE_TUNNEL_TOKEN=${var.cloudflare_tunnel_token}
+OPENROUTER_API_KEY=${var.openrouter_api_key}
+ENV
 
     # Run
-    docker compose up -d
+    docker-compose up -d
   EOF
 
   tags = {
